@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+</head>
+
+<body>
+  <div id="content"></div>
+  <form>
+    <input type="text" placeholder="UserId" name="userid" />
+    <br /><input type="text" placeholder="password" name="password" />
+    <br /><input type="button" value="Login" onClick="login(this.parentNode);" />
+  </form>
+  <div id="msg"></div>
+  <script>
+    function login(obj) {
+        google.script.run
+        .withSuccessHandler((obj) => {
+          (obj.loggedin == true) ? document.getElementById('msg').innerHTML = "Your are logged in" : document.getElementById('msg').innerHTML = "Go away";
+        }).login(obj);
+      }
+    console.log("My Code");
+  </script>
+
+<script>
+function login(obj) {
+  const ss = SpreadsheetApp.getActive();
+  const sh = ss.getSheetByName('Login');
+  const vs = sh.getRange(2,1,sh.getLastRow() - 1, 2).getValues();
+  let robj = {loggedin:false};
+  for(let i = 0;i<vs.length; i++) {
+    if(vs[i][0] == obj.userid && vs[i][1] == obj.password) {
+      robj.loggedin = true;
+      break;
+    }
+  }
+  return robj;
+}
+
+function launchLogin() {
+  const ui = SpreadsheetApp.getUi();
+  ui.showModelessDialog(HtmlService.createHtmlOutputFromFile("ah1"),"Login Form");
+}
+</script>
+
+</body>
+
+</html>
